@@ -1,0 +1,6 @@
+id_stu,title, fname_stu,lname_stu, id_curriculum,GPA_stu,year_class,class,year_stu,password_stu
+630001,นาย, สรวิชญ์, TEST1,1,1,1-Jan,1,2561,111
+630002,นาย, Text2, TEST2,1,2,2-Jan,1,2561,111
+630003,นาย, Text3, TEST3,1,3,3-Jan,1,2561,111
+630004,นาย, Text4, TEST4,1,4,4-Jan,1,2561,111
+630005,นาย, Text5, TEST5,1,5,5-Jan,1,2561,111
