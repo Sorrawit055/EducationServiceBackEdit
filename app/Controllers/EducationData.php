@@ -53,6 +53,7 @@ class EducationData extends ResourceController
         $educationdata ['course'] = $edumodel->join('course', 'course.id_course = education_detail.id_course')
         ->select('course.id_course')
         ->distinct()
+        ->orderBy('name_course', 'ASC')
         ->select('name_course')
         ->findAll();
         return $this->respond($educationdata);
@@ -63,6 +64,7 @@ class EducationData extends ResourceController
         $educationdata ['faculty'] = $edumodel->join('faculty', 'faculty.id_faculty = education_detail.id_faculty')
         ->select('faculty.id_faculty')
         ->distinct()
+        ->orderBy('name_faculty', 'ASC')
         ->select('name_faculty')
         ->findAll();
         return $this->respond($educationdata);
@@ -73,6 +75,7 @@ class EducationData extends ResourceController
         $educationdata ['major'] = $edumodel->join('group_major', 'group_major.id_major = education_detail.id_major')
         ->select('group_major.id_major')
        ->distinct()
+       ->orderBy('name_major', 'ASC')
         ->select('name_major')
         ->findAll();
         return $this->respond($educationdata);
@@ -84,13 +87,14 @@ class EducationData extends ResourceController
         ->join('university', 'university.id_university = education.id_university')
         ->select('university.id_university')
         ->distinct()
+        ->orderBy('name_uni', 'ASC')
         ->select('name_uni')
         ->findAll();
         return $this->respond($educationdata);
     }
     
-
-    public function getEducationdataid($educationID = null){
+    public function getEducationdataID($educationID = null)
+    {
         $edumodel = new EducationDataModel();
         $educationdata = $edumodel->join('education', 'education.id_education = education_detail.id_education')
         ->join('course', 'course.id_course = education_detail.id_course')
@@ -105,9 +109,14 @@ class EducationData extends ResourceController
         ->select('course.*')
         ->select('education.*')
         ->select('education_detail.*')
-        ->where('education.id_education',$educationID)->first();
-        return $this->respond($educationdata);
+        ->where('education_detail.id_edu_detail',$educationID)->first();
+        if($educationdata){
+            return $this->respond($educationdata);
+        }else{
+            return $this->failNotFound('Not found');
+        }
     }
+
 
     // public function SearchEducation($educationdata = null)
     // {

@@ -46,4 +46,8 @@ class BaseController extends Controller
 		//--------------------------------------------------------------------
 		// E.g.: $this->session = \Config\Services::session();
 	}
+	public function index()
+    {
+        return view('welcome_message');
+    }
 }

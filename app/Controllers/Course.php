@@ -22,7 +22,7 @@ class Course extends ResourceController
     public function index()
     {
        $model = new CourseModel();
-        $data['course'] = $model->orderBy('id_course', 'DESC')->findAll();
+        $data['course'] = $model->orderBy('name_course', 'ASC')->findAll();
         return $this->respond($data);  
     }
 
@@ -35,7 +35,7 @@ class Course extends ResourceController
         ->select('course.*')
         ->select('group_major.*')
         ->select('degree.*')
-        ->orderBy('id_course','DESC')->findAll();        
+        ->orderBy('name_course','ASC')->findAll();        
         return $this->respond($datacouse);
     }
 
@@ -112,7 +112,10 @@ class Course extends ResourceController
     {
        $model = new CourseModel();
        $keyword = $this->request->getvar('keyword');
-       $data = $model->like('name_course' , $keyword)-> findAll();
+       
+       $data = $model->like('name_course' , $keyword)
+       ->orderBy('name_course','ASC')
+       ->findAll();
 
        return $this->respond($data);
     }

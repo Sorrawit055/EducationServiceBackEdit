@@ -32,10 +32,10 @@ class Database extends Config
 	 */
 	public $default = [
 		'DSN'      => '',
-		'hostname' => 'localhost',
-		'username' => 'root',
-		'password' => '',
-		'database' => 'education_service',
+		'hostname' => 'us-cdbr-east-04.cleardb.com',//localhost
+		'username' => 'b33570c63bb5f0',//root
+		'password' => 'b4d2b224',//ไม่มี
+		'database' => 'heroku_7a14a90a2b792f8',//education_service
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
 		'pConnect' => false,
@@ -49,7 +49,8 @@ class Database extends Config
 		'failover' => [],
 		'port'     => 3306,
 	];
-
+	//b2ad8f1677e222:142fa2d8@us-cdbr-east-04.cleardb.com/heroku_f30c7eaabdff656?reconnect=true
+	//b33570c63bb5f0:b4d2b224@us-cdbr-east-04.cleardb.com/heroku_7a14a90a2b792f8?reconnect=true
 	/**
 	 * This database connection is used when
 	 * running PHPUnit database tests.

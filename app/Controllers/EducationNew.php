@@ -35,7 +35,9 @@ class EducationNew extends ResourceController
         $data = [
             "id_new" => $this->request->getvar('id_new'),
             "new_name" => $this->request->getvar('new_name'),
-            "new_date" => $this->request->getvar('new_date'),
+            "new_date_open" => $this->request->getvar('new_date_open'),
+            "new_date_close" => $this->request->getvar('new_date_close'),
+            "new_sub_detail" => $this->request->getvar('new_sub_detail'),
             "new_detail" => $this->request->getvar('new_detail'),
             "new_url" => $this->request->getvar('new_url'),
             "new_image" => $this->request->getvar('new_image'),
@@ -57,7 +59,9 @@ class EducationNew extends ResourceController
         $model = new EducationNewModel();
         $data = [
             "new_name" => $this->request->getvar('new_name'),
-            "new_date" => $this->request->getvar('new_date'),
+            "new_date_open" => $this->request->getvar('new_date_open'),
+            "new_date_close" => $this->request->getvar('new_date_close'),
+            "new_sub_detail" => $this->request->getvar('new_sub_detail'),
             "new_detail" => $this->request->getvar('new_detail'),
             "new_url" => $this->request->getvar('new_url'),
             "new_image" => $this->request->getvar('new_image'),

@@ -10,12 +10,12 @@ class EducationStudent extends ResourceController
 {
     use ResponseTrait;
 
-    // public function getAllEducation()
-    // {
-    //     $model = new EducationStudentModel();
-    //     $educationdata['education'] = $model->orderBy('id_edu_stu','DESC')->findAll();
-    //     return $this->respond($educationdata);
-    // }
+    public function getAllEducation()
+    {
+        $model = new EducationStudentModel();
+        $educationdata['education'] = $model->orderBy('id_edu_stu','DESC')->findAll();
+        return $this->respond($educationdata);
+    }
 
     public function getEducation($educationID = null){
         $model = new EducationStudentModel();
@@ -70,16 +70,15 @@ class EducationStudent extends ResourceController
             "id_course"=> $this->request->getvar('id_course'),
             "id_major"=> $this->request->getvar('id_major'),
         ];
-        $model->update($educationID, $educationdata);
-        $response=[
-            'satatus'=>201,
-            'error'=>null,
-            'meessage'=>[
-                'success' => 'Update EducationStudent Successfully'
-            ]
-        ];
+        if ($model) {
+            $model->update($educationID, $educationdata);
+            $checkedu = $model->where('id_stu', $educationdata['id_stu'])->first();
+            $response = ['message'  => 'success'];
             return $this->respond($response);
-    } 
-
+        } else {
+            $response = ['message' => 'fail'];
+            return $this->respond($response);
+        }
+    }
     
 }

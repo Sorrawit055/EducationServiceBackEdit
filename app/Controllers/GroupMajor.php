@@ -17,7 +17,7 @@ class GroupMajor extends ResourceController
     public function index()
     {
         $major = new GroupMajorModel();
-        $data['major'] = $major->orderBy('id_major', 'DESC')->findAll();
+        $data['major'] = $major->orderBy('name_major', 'ASC')->findAll();
         return $this->respond($data);
     }
 
@@ -81,8 +81,9 @@ class GroupMajor extends ResourceController
     {
        $major = new GroupMajorModel();
        $keyword = $this->request->getvar('keyword');
-       $data = $major->like('name_major' , $keyword)-> findAll();
-
+       $data = $major->like('name_major' , $keyword)
+       ->orderBy('name_major', 'ASC')
+       -> findAll();
        return $this->respond($data);
     }
 }

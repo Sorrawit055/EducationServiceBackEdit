@@ -21,6 +21,8 @@ class Teacher extends ResourceController
         $studentdata['year'] = $model->select('year_stu')->findAll();
         return $this->respond($studentdata);
     }
+
+
     public function getClass()
     {
         $model = new StudentModel();
@@ -41,6 +43,7 @@ class Teacher extends ResourceController
         // $studentdata = $stumodel->where('student.class',$classID)->findAll();
         // return $this->respond($studentdata);
     }
+
 
     public function getYearClass($YearID = null){
         $stumodel = new StudentModel();

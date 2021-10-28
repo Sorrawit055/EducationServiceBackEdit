@@ -103,6 +103,7 @@ class EduDetail extends ResourceController
     {
         $model = new EduDetailModel();
         $educationDetaildata = [
+            "id_edu_detail" => $this->request->getVar('id_edu_detail'),
             "number_of_edu" => $this->request->getVar('number_of_edu'),
             "GPA"=> $this->request->getVar('GPA'),
             "id_major" => $this->request->getVar('id_major'),
@@ -113,7 +114,7 @@ class EduDetail extends ResourceController
             "id_education" => $this->request->getVar('id_education')
         ];
 
-        $checkedudetail = $model->where('note_condi',$educationDetaildata['note_condi'])->first();
+        $checkedudetail = $model->where('id_edu_detail',$educationDetaildata['id_edu_detail'])->first();
         if ($checkedudetail === null) {
             $model->insert($educationDetaildata);
             $response = ['message'  => 'success'];

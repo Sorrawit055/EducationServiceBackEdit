@@ -4,6 +4,8 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;//ทำAPI
 use CodeIgniter\API\ResponseTrait;//จัดเป็น json เอง
 use App\Models\StaffModel;
+use App\Models\PositionModel;
+use App\Models\TitleModel;
 use App\Models\StudentModel;
 
 use ResourceBundle;
@@ -25,49 +27,38 @@ class Staff extends ResourceController
 
     public function AddOneStudent()
     {
+        
         $studentmodel = new StudentModel();
         $studentdata=[
                         "id_stu"=> $this->request->getvar('id_stu'),
-                        "id_title"=> $this->request->getvar('id_title'),
+                        "title"=> $this->request->getvar('title'),
                         "fname_stu"=> $this->request->getvar('fname_stu'),
                         "lname_stu"=> $this->request->getvar('lname_stu'),
                         "id_curriculum"=> $this->request->getvar('id_curriculum'),
-                        "GPA_stu"=> $this->request->getvar('GPA_stu'),
+                        "GPA_stu"=> $this->request->getvar('gpa_stu'),
                         "year_class"=> $this->request->getvar('year_class'),
-                        "class"=> $this->request->getvar('class'),
+                        "class"=> $this->request->getvar('room'),
                         "year_stu"=> $this->request->getvar('year_stu'),
                         "password_stu"=> $this->request->getvar('password_stu'),
             
                     ];
 
-                    return $studentdata;
-       /* $check = $studentmodel->where('id_stu',$studentdata['id_stu'])->first();
+                   
+       $check = $studentmodel->where('id_stu',$studentdata['id_stu'])->first();
         
         
         
         if($check === null){
             $studentmodel->insert($studentdata);
-                  $response=[
-                       'satatus'=>201,
-                        'error'=>null,
-                        'meessage'=>[
-                            'success' => 'สมัครสำเร็จ'
-                        ]
-                    ];
+            $response = ['message'  => 'success'];
                    
                    return $this->respond($response);
         }else{
-                    $response=[
-                       'satatus'=>400,
-                        'error'=>null,
-                        'meessage'=>[
-                            'success' => 'ข้อมูลมีอยู่เเล้ว'
-                       ]
-                    ];
+            $response = ['message' => 'fail'];
                    return $this->respond($response);
                 
             
-        }*/
+        }
 
 
         
@@ -145,119 +136,137 @@ public function updateStaff($staffId = null)
 
     return $this->respond($response);
 }
-public function AddStudentAll()
- {
-     $studentmodel = new StudentModel();
 
-     $data = [
-         "students" => $this->request->getvar('students'),
-     ];
-     
-     echo $data;
-    
-     if(is_array($data)) {
-         foreach($data as $stu ){
-             $studentdata = [
-                 "id_stu" => $stu['id_stu'],
-                "title"  => $stu['title'],
-                "fname_stu" => $stu['fname_stu'],
-                "lname_stu" => $stu['lname_stu'],
-                "id_curriculum" => $stu['id_curriculum'],
-                 "GPA_stu" => $stu['GPA_stu'],
-                "year_class" => $stu['year_class'],
-               "class"  => $stu['class'],
-               "year_stu" => $stu['year_stu'],
-               "password_stu" => $stu['password_stu'],
-
-            ];
-
-            $checkIDstu = $studentmodel->where('id_stu',$studentdata['id_stu'])->first();
-
-           if($checkIDstu === null) {
-                $studentmodel->insert($studentdata);
-                 $response = [
-                     'satatus' => 201,
-                     'error' => null,
-                     'meessage' => [
-                         'success' => 'เพิ่มนักเรียนชั้นนี้สำเร็จ'
-                     ]
-                 ];
-             }else{
-                $response = [
-                    'satatus' => 202,
-                     'error' => null,
-                     'meessage' => [
-                        'success' => 'นักเรียนชั้นนี้มีข้อมูลอยู่แล้ว'
-                    ]
-                 ];
-           }
-
-             return $this->respond($response);
-
-         }
-     }else{
-         $response = [
-             'satatus' => 502,
-             'error' => null,
-             'meessage' => [
-                 'success' => 'การรับส่งข้อมูลระหว่างเซริฟเวอร์'
-            ]
-        ];
-
-     } 
-    
- }
-
-
-
-
-public function import()
-{
-    $input = $this->validate([
-        'file' => 'uploaded[file]|max_size[file,2048]|ext_in[file,csv],'
-    ]);
-
-    if (!$input) {
-        $data['validation'] = $this->validator;
-    }else{
-        if($file = $this->request->getFile('students')) {
-            $csvArr = array();
-            while (($filedata = fgetcsv($file, 1000, ",")) !== FALSE) {
-                $num = count($filedata);
-                if($i > 0 && $num == $numberOfFields){ 
-                    $csvArr[$i]['id_stu'] = $filedata[0];
-                    $csvArr[$i]['title'] = $filedata[1];
-                    $csvArr[$i]['lname'] = $filedata[2];
-                    $csvArr[$i]['fname'] = $filedata[3];
-                    $csvArr[$i]['year_class'] = $filedata[4];
-                    $csvArr[$i]['class'] = $filedata[5];
-                    $csvArr[$i]['year_stu'] = $filedata[6];
-                    $csvArr[$i]['password'] = $filedata[7];
-
-                }
-                $i++;
-            }
-            fclose($file);
-
-            $count = 0;
-            foreach($csvArr as $userdata){
-                $students = new StudentModel();
-
-                $findRecord = $students->where('id_student', $userdata['id_student'])->countAllResults();
-
-                if($findRecord == 0){
-                    if($students->insert($userdata)){
-                        $count++;
-                        $response = ['message'  => 'success'];
-                        return $this->respond($response);
-                    } else {
-                        $response = ['message' => 'fail'];
-                        return $this->respond($response);
-                    }
-                    }
-                }
-            }
+public function getStudent(){
+    $stumodel = new StudentModel();
+    $studentdata = $stumodel
+    ->orderBy('id_stu', 'DESC')
+    ->findAll();
+    return $this->respond($studentdata);
+    // $stumodel = new StudentModel();
+    // $studentdata = $stumodel->where('student.class',$classID)->findAll();
+    // return $this->respond($studentdata);
 }
-}
+
+// public function AddStudentAll()
+// {
+//     $studentmodel = new StudentModel();
+
+//     $data = [
+//         "students" => $this->request->getvar('students'),
+//     ];
+    
+//     if(is_array($data)) {
+//         foreach($data as $stu ){
+//             $studentdata = [
+//                 "id_stu" => $stu['id_stu'],
+//                 "title"  => $stu['title'],
+//                 "fname_stu" => $stu['fname_stu'],
+//                 "lname_stu" => $stu['lname_stu'],
+//                 "id_curriculum" => $stu['id_curriculum'],
+//                 "GPA_stu" => $stu['GPA_stu'],
+//                 "year_class" => $stu['year_class'],
+//                 "class"  => $stu['class'],
+//                 "year_stu" => $stu['year_stu'],
+//                 "password_stu" => $stu['password_stu'],
+
+//             ];
+
+//             $checkIDstu = $studentmodel->where('id_stu',$studentdata['id_stu'])->first();
+
+//             if($checkIDstu === null) {
+//                 $studentmodel->insert($studentdata);
+//                 $response = [
+//                     'satatus' => 201,
+//                     'error' => null,
+//                     'meessage' => [
+//                         'success' => 'เพิ่มนักเรียนชั้นนี้สำเร็จ'
+//                     ]
+//                 ];
+//             }else{
+//                 $response = [
+//                     'satatus' => 202,
+//                     'error' => null,
+//                     'meessage' => [
+//                         'success' => 'นักเรียนชั้นนี้มีข้อมูลอยู่แล้ว'
+//                     ]
+//                 ];
+//             }
+
+//             return $this->respond($response);
+
+//         }
+//     }else{
+//         $response = [
+//             'satatus' => 502,
+//             'error' => null,
+//             'meessage' => [
+//                 'success' => 'การรับส่งข้อมูลระหว่างเซริฟเวอร์'
+//             ]
+//         ];
+
+//     }
+    
+// }
+// public function AddStudentAll()
+// {
+//     $studentmodel = new StudentModel();
+    
+//     $data = $this->resquest->getvar('students');
+
+//     if(is_array($data)) {
+//         foreach($data as $stu ){
+//             $studentdata = [
+//                 "id_stu" => $stu['id_stu'],
+//                 "title"  => $stu['title'],
+//                 "fname_stu" => $stu['fname_stu'],
+//                 "lname_stu" => $stu['lname_stu'],
+//                 "id_curriculum" => $stu['id_curriculum'],
+//                 "GPA_stu" => $stu['GPA_stu'],
+//                 "year_class" => $stu['year_class'],
+//                 "class"  => $stu['class'],
+//                 "year_stu" => $stu['year_stu'],
+//                 "password_stu" => $stu['password_stu'],
+
+//             ];
+
+//             $checkIDstu = $studentmodel->where('id_stu',$studentdata['id_stu'])->first();
+
+//             if($checkIDstu === null) {
+//                 $studentmodel->insert($studentdata);
+//                 $response = [
+//                     'satatus' => 201,
+//                     'error' => null,
+//                     'meessage' => [
+//                         'success' => 'เพิ่มนักเรียนชั้นนี้สำเร็จ'
+//                     ]
+//                 ];
+//             }else{
+//                 $response = [
+//                     'satatus' => 202,
+//                     'error' => null,
+//                     'meessage' => [
+//                         'success' => 'นักเรียนชั้นนี้มีข้อมูลอยู่แล้ว'
+//                     ]
+//                 ];
+//             }
+
+//             return $this->respond($response);
+
+//         }
+//     }else{
+//         $response = [
+//             'satatus' => 502,
+//             'error' => null,
+//             'meessage' => [
+//                 'success' => 'การรับส่งข้อมูลระหว่างเซริฟเวอร์'
+//             ]
+//         ];
+
+//     }
+    
+// }
+
+
 }
 ?>

@@ -16,14 +16,14 @@ class Faculty extends ResourceController
     public function index()
     {
         $model = new FacultyModel();
-        $data['faculty'] = $model->orderBy('id_Faculty', 'DESC')->findAll();
+        $data['faculty'] = $model->orderBy('name_Faculty', 'ACS')->findAll();
         return $this->respond($data);
     }
 
     public function getFacultyAll()
     {
         $model = new FacultyModel();
-        $data['faculty'] = $model->orderBy('id_Faculty', 'DESC')->findAll();
+        $data['faculty'] = $model->orderBy('name_Faculty', 'ASC')->findAll();
         return $this->respond($data);
     }
     
@@ -84,7 +84,9 @@ class Faculty extends ResourceController
     {
        $model = new FacultyModel();
        $keyword = $this->request->getvar('keyword');
-       $data = $model->like('name_faculty' , $keyword)-> findAll();
+       $data = $model->like('name_faculty' , $keyword)
+       ->orderBy('name_Faculty', 'ASC')
+       -> findAll();
 
        return $this->respond($data);
     }

@@ -100,7 +100,7 @@ $routes->get('/degree', 'Degree::searchDegree');
 $routes->post('/createEducation','Education::createEducation');
 $routes->put('/updateEducation/(:num)', 'Education::updateEducation/$1');
 $routes->delete('/deleteEducation/(:num)','Education::deletedEducation/$1');
-$routes->get('/getEducation','Education::getEducation');
+// $routes->get('/getEducation','Education::getEducation');
 $routes->get('/Education/(:num)','Education::getEducatioById/$1');
 $routes->post('/Education','Education::searchEducation');
 $routes->put('/Education/(:num)','Education::updateEducationImage/$1');
@@ -121,7 +121,7 @@ $routes->put('/updateEduCondition/(:num)', 'EduCondition::updateEduCondition/$1'
 
 //// EducationData ////
 $routes->get("/EducationData", "EducationData::getAllEducationData");
-$routes->get('/EducationData/(:num)', 'EducationData::getEducationdataid/$1');
+$routes->get('/EducationData/(:num)', 'EducationData::getEducationdataID/$1');
 $routes->get('/EducationData', 'EducationData::SearchEducation');
 // $routes->get('/EducationData', 'EducationData::Search2');
 $routes->get('/EducationData', 'EducationData::search3');
@@ -149,13 +149,16 @@ $routes->post('/Staff', 'Staff::getStaff');
 $routes->get('/Staff/(:num)', 'Staff::updateStaff/$1');
 $routes->post('/Staff', 'Staff::AddOneStudent');
 $routes->post('/Staff', 'Staff::AddStudentAll');
-$routes->post('/Staff', 'Staff::import');
+// $routes->post('/Staff', 'Staff::import');
+$routes->get('/Staff', 'Staff::getStudent');
 
 //// Admin ////
 $routes->post('/Admin', 'Admin::AddTeacher');
-$routes->post('/Admin', 'Admid::AddStudentAll');
 $routes->get('/Admin', 'Admin::getAllStaff');
 $routes->delete('/Admin/(:num)', 'Admin::DeleteStaff/$1');
+$routes->put('/Admin/(:num)', 'Admin::updateAdmin/$1');
+$routes->get('/Admin', 'Admin::getStudent');
+
 
 //// Carousel ////
 $routes->get('/Carousel', 'Carousel::getCarousel');
@@ -181,9 +184,8 @@ $routes->get('/Footer/(:num)', 'Footer::getFooterId/$1');
 $routes->put('/Footer/(:num)', 'Footer::updateFooter/$1');
 
 
-$routes->get('/', 'StudentController::index');
+$routes->get('/', 'BaseController::index');
 
-$routes->post('import-csv', 'StudentController::importCsvToDb');
 
 /*
  * --------------------------------------------------------------------

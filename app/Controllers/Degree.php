@@ -15,7 +15,7 @@ class Degree extends ResourceController
     public function index()
     {
         $model = new DegreeModel();
-        $data['degree'] = $model->orderBy('id_degree','DESC')->findAll();
+        $data['degree'] = $model->orderBy('name_degree','ASC')->findAll();
         return $this->respond($data);
     }
 
@@ -82,7 +82,9 @@ class Degree extends ResourceController
     {
        $model = new DegreeModel();
        $keyword = $this->request->getvar('keyword');
-       $data = $model->like('name_degree' , $keyword)-> findAll();
+       $data = $model->like('name_degree' , $keyword)
+       ->orderBy('name_degree','ASC')
+       -> findAll();
 
        return $this->respond($data);
     }

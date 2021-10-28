@@ -4,7 +4,10 @@ namespace App\Controllers;
 use CodeIgniter\RESTful\ResourceController;//ทำAPI
 use CodeIgniter\API\ResponseTrait;//จัดเป็น json เอง
 use App\Models\StaffModel;
+use App\Models\PositionModel;
+use App\Models\TitleModel;
 use App\Models\StudentModel;
+
 
 use ResourceBundle;
 
@@ -22,7 +25,29 @@ class Admin extends ResourceController
         ->findAll();
         return $this->respond($AdminTeacher);
     }
-
+    public function updateAdmin($staffId = null)
+    {
+        $staffmodel = new StaffModel();
+        $staffdata = [
+            "id_title" => $this->request->getvar('id_title'),
+            "fname_staff" => $this->request->getvar('fname_staff'),
+            "lname_staff" => $this->request->getvar('lname_staff'),
+            "phone_staff" => $this->request->getvar('phone_staff'),
+            "id_position" => $this->request->getvar('id_position'),
+            "password_staff" => $this->request->getvar('password_staff')
+        ];
+    
+        $staffmodel->update($staffId,$staffdata);
+        $response = [
+            'satatus' => 201,
+            'error' => null,
+            'meessage' => [
+                'success' => 'อัพเดตข้อมูลส่วนตัวเรียบร้อย'
+            ]
+        ];
+    
+        return $this->respond($response);
+    }
     public function AddOneStudent()
     {
         $studentmodel = new StudentModel();
@@ -43,22 +68,11 @@ class Admin extends ResourceController
             
         if($check === null){
             $studentmodel->insert($studentdata);
-                  $response=[
-                       'satatus'=>201,
-                        'error'=>null,
-                        'meessage'=>[
-                            'success' => 'สมัครสำเร็จ'
-                        ]
-                    ];
-                   return $this->respond($response);
+            $response = ['message'  => 'success'];
+            return $this->respond($response);
         }else{
-                    $response=[
-                       'satatus'=>400,
-                        'error'=>null,
-                        'meessage'=>[
-                            'success' => 'ข้อมูลมีอยู่เเล้ว'
-                       ]
-                    ];
+            $response = ['message' => 'fail'];
+            return $this->respond($response);
                    return $this->respond($response);
                 
             
@@ -67,65 +81,16 @@ class Admin extends ResourceController
 
     }
 
-    public function AddStudentAll()
-    {
-         $studentmodel = new StudentModel();
-
-    
-     if(is_array($data)) {
-         foreach($data as $stu ){
-             $studentdata = [
-                "id_stu" => $stu['id_stu'],
-                "title"  => $stu['title'],
-                "fname_stu" => $stu['fname_stu'],
-                "lname_stu" => $stu['lname_stu'],
-                "id_curriculum" => $stu['id_curriculum'],
-                "GPA_stu" => $stu['GPA_stu'],
-                "year_class" => $stu['year_class'],
-                "class"  => $stu['class'],
-                "year_stu" => $stu['year_stu'],
-                "password_stu" => $stu['password_stu'],
-
-            ];
-
-            $checkIDstu = $studentmodel->where('id_stu',$studentdata['id_stu'])->first();
-
-           if($checkIDstu === null) {
-                $studentmodel->insert($studentdata);
-                 $response = [
-                     'satatus' => 201,
-                     'error' => null,
-                     'meessage' => [
-                         'success' => 'เพิ่มนักเรียนชั้นนี้สำเร็จ'
-                     ]
-                 ];
-             }else{
-                $response = [
-                    'satatus' => 202,
-                     'error' => null,
-                     'meessage' => [
-                        'success' => 'นักเรียนชั้นนี้มีข้อมูลอยู่แล้ว'
-                    ]
-                 ];
-           }
-
-             return $this->respond($response);
-
-         }
-     }else{
-         $response = [
-             'satatus' => 502,
-             'error' => null,
-             'meessage' => [
-                 'success' => 'การรับส่งข้อมูลระหว่างเซริฟเวอร์'
-            ]
-        ];
-
-     } 
-    
- }
-        
-    
+    public function getStudent(){
+        $stumodel = new StudentModel();
+        $studentdata = $stumodel
+        ->orderBy('id_stu', 'DESC')
+        ->findAll();
+        return $this->respond($studentdata);
+        // $stumodel = new StudentModel();
+        // $studentdata = $stumodel->where('student.class',$classID)->findAll();
+        // return $this->respond($studentdata);
+    }
 
     public function AddTeacher()
     {
@@ -184,12 +149,6 @@ public function DeleteStaff($staffId = null)
         return $this->failNotFound('No IDStaff Found');
     }
 
-}
-
-
-public function DataTest()
-{
-    
 }
 
 
